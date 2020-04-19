@@ -1,23 +1,46 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Topic;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.services.TopicService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class TopicController {
 
-    @RequestMapping("/topics")
+    // mark as dependency injection
+    @Autowired
+    private TopicService topicService;
+
+    @RequestMapping("/topics") // just for get
     public List<Topic> getAllTopics(){
         // converts to JSON automatic
-        return Arrays.asList(
-                new Topic("111","Topic1","DescriptionTopic1"),
-                new Topic("112","Topic2","DescriptionTopic2"),
-                new Topic("113","Topic3","DescriptionTopic3"),
-                new Topic("114","Topic4","DescriptionTopic4")
-        );
+        return topicService.getAllTopics();
     }
+
+    // same name of parameter in url and parameter
+    @RequestMapping("/topics/{Id}")
+    public Topic getTopicById(@PathVariable String Id){
+        return topicService.getTopicById(Id);
+    }
+
+    // take from request body into Topic instance
+    @RequestMapping(method = RequestMethod.POST, value = "/topics")
+    public Topic AddTopic(@RequestBody Topic topic){
+        return topicService.InsertTopic(topic);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/topics/{Id}")
+    public Topic UpdateTopic(@RequestBody Topic topic,@PathVariable String Id){
+        return topicService.UpdateTopic(Id, topic);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/topics/{Id}")
+    public Topic DeleteTopic(@PathVariable String Id){
+        return topicService.DeleteTopic(Id);
+    }
+
 }
