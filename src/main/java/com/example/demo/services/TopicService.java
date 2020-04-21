@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entity.Topic;
+import com.example.demo.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,12 @@ public class TopicService {
     public List<Topic> getAllTopics(){
         List<Topic> topics = new ArrayList<>();
         topicRepository.findAll().forEach(topics::add);
+        //topicRepository.findAll().forEach(x -> topics.add(x)); same
         return topics;
     }
 
     public Topic getTopicById(Long Id){
-        Topic t = topicRepository.findById(Id).orElse(null);
-        return t;
+        return topicRepository.findById(Id).orElse(null);
     }
 
     public Topic InsertTopic(Topic topic){

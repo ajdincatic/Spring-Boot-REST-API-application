@@ -1,7 +1,9 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 // make Topic as table
@@ -14,11 +16,14 @@ public class Topic {
     private String name;
     private String description;
 
+    @OneToMany
+    @JoinColumn(name = "course_id")
+    private List<Course> courses = new ArrayList<>();
+
     public Topic() {
     }
 
     public Topic(Long id,String name, String description) {
-        id = id;
         name = name;
         description = description;
     }

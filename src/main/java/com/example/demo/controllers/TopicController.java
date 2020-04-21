@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class TopicController {
 
     // mark as dependency injection
@@ -33,6 +34,7 @@ public class TopicController {
 
     // take from request body into Topic instance
     @RequestMapping(method = RequestMethod.POST, value = "/topics")
+    //@PostMapping(value = "/topics")
     public Topic AddTopic(@RequestBody Topic topic){
         return topicService.InsertTopic(topic);
     }

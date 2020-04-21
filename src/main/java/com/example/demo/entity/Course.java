@@ -3,20 +3,33 @@ package com.example.demo.entity;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 // make Topic as table
 @Entity
 public class Course {
 
-    // use lowercase letters
+    // use lowercase letters for property names
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @NotNull
+    @Size(min = 1,message = "Description must not be empty")
     private String description;
 
     @ManyToOne
     private Topic topic;
+
+    public Course() {
+    }
+
+    public Course(Long id, String name, String description,Long topicId) {
+        name = name;
+        description = description;
+        topic = new Topic(topicId,"","");
+    }
 
     public Long getId() {
         return id;
@@ -50,15 +63,6 @@ public class Course {
         this.topic = topic;
     }
 
-    public Course() {
-    }
-
-    public Course(Long id, String name, String description,Long topicId) {
-        name = name;
-        id = id;
-        description = description;
-        topic = new Topic(topicId,"","");
-    }
 
 }
 
