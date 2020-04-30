@@ -16,22 +16,20 @@ public class CourseController {
 
     // mark as dependency injection
     private CourseService courseService;
-    private TopicService topicService;
 
     @Autowired
-    public CourseController(CourseService courseService, TopicService topicService) {
+    public CourseController(CourseService courseService) {
         this.courseService = courseService;
-        this.topicService = topicService;
     }
 
-    @RequestMapping("/topics/{Id}/courses") // just for get
-    public List<Course> getAllCourses(@PathVariable Long Id){
+    @RequestMapping("/courses")
+    public List<Course> getAllCourses(){
         // converts to JSON automatic
-        return courseService.getAllCourses(Id);
+        return courseService.getAllCourses();
     }
 
     // same name of parameter in url and parameter
-    @RequestMapping("/topics/{topicId}/courses/{Id}")
+    @RequestMapping("/courses/{Id}")
     public Course getCourseById(@PathVariable Long Id){
         return courseService.getCourseById(Id);
     }
@@ -39,17 +37,15 @@ public class CourseController {
     // take from request body into course instance
     @RequestMapping(method = RequestMethod.POST, value = "/topics/{topicId}/courses")
     public Course AddCourse(@RequestBody Course course, @PathVariable Long topicId){
-        course.setTopic(topicService.getTopicById(topicId));
-        return courseService.InsertCourse(course);
+        return courseService.InsertCourse(course,topicId);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/topics/{topicId}/courses/{Id}")
     public Course UpdateCourse(@RequestBody @Valid Course course, @PathVariable Long topicId, @PathVariable Long Id){
-        course.setTopic(topicService.getTopicById(topicId));
-        return courseService.UpdateCourse(course);
+        return courseService.UpdateCourse(course,topicId);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/topics/{topicId}/courses/{Id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/courses/{Id}")
     public Course DeleteCourse(@PathVariable Long Id){
         return courseService.DeleteCourse(Id);
     }

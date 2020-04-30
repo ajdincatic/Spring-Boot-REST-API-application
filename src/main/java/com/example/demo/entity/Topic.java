@@ -17,15 +17,9 @@ public class Topic {
     private String description;
 
     @OneToMany
-    @JoinColumn(name = "course_id")
     private List<Course> courses = new ArrayList<>();
 
     public Topic() {
-    }
-
-    public Topic(Long id,String name, String description) {
-        name = name;
-        description = description;
     }
 
     public Long getId() {

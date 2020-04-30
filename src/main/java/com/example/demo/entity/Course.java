@@ -5,6 +5,10 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 // make Topic as table
 @Entity
@@ -22,13 +26,10 @@ public class Course {
     @ManyToOne
     private Topic topic;
 
-    public Course() {
-    }
+    @OneToMany
+    private List<Student> students = new ArrayList<>();
 
-    public Course(Long id, String name, String description,Long topicId) {
-        name = name;
-        description = description;
-        topic = new Topic(topicId,"","");
+    public Course() {
     }
 
     public Long getId() {
