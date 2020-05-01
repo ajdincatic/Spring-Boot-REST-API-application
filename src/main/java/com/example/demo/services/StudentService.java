@@ -34,7 +34,7 @@ public class StudentService {
         if(request.lastName != null){
             studentRepository.findByLastName(request.lastName).forEach(courses::add);
         }
-        if(request.courseId != null){
+        else if(request.courseId != null){
             studentRepository.findByCourseId(request.courseId).forEach(courses::add);
         }
         else {
