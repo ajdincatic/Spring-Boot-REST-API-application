@@ -6,6 +6,8 @@ import com.example.demo.entity.Topic;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.repository.TopicRepository;
+import com.example.demo.requests.StudentInsertRequest;
+import com.example.demo.requests.StudentSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,18 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public List<Student> getAll(){
+    public List<Student> getAll(StudentSearchRequest request){
         List<Student> courses = new ArrayList<>();
-        studentRepository.findAll().forEach(courses::add);
+
+        if(request.lastName != null){
+            studentRepository.findByLastName(request.lastName).forEach(courses::add);
+        }
+        if(request.courseId != null){
+            studentRepository.findByCourseId(request.courseId).forEach(courses::add);
+        }
+        else {
+            studentRepository.findAll().forEach(courses::add);
+        }
         return courses;
     }
 
@@ -37,19 +48,21 @@ public class StudentService {
         return t;
     }
 
-    @Transactional
-    public Student Insert(Student student, Long courseId){
-        Optional<Course> t = courseRepository.findById(courseId);
-        student.setCourse(t.get());
-        studentRepository.save(student);
-        return student;
+    public Student Insert(StudentInsertRequest student){
+        Student s = new Student();
+        s.setFirstName(student.firstName);
+        s.setLastName(student.lastName);
+        s.setCourse(courseRepository.findById(student.courseId).get());
+        studentRepository.save(s);
+        return s;
     }
 
-    public Student Update(Student student, Long courseId) {
-        Optional<Course> t = courseRepository.findById(courseId);
-        student.setCourse(t.get());
-        // repository recognize if there is already row in table, we do not need Id
-        studentRepository.save(student);
-        return student;
+    public Student Update(StudentInsertRequest student,Long Id) {
+        Student s = studentRepository.findById(Id).get();
+        s.setFirstName(student.firstName);
+        s.setLastName(student.lastName);
+        s.setCourse(courseRepository.findById(student.courseId).get());
+        studentRepository.save(s);
+        return s;
     }
 }

@@ -30,6 +30,12 @@ public class CourseService {
         return courses;
     }
 
+    public List<Course> getAllCoursesByTopic(Long topicId) {
+        List<Course> courses = new ArrayList<>();
+        courseRepository.findByTopicId(topicId).forEach(courses::add);
+        return courses;
+    }
+
     public Course getCourseById(Long Id){
         Course t = courseRepository.findById(Id).orElse(null);
         return t;
@@ -55,4 +61,5 @@ public class CourseService {
         courseRepository.deleteById(id);
         return t;
     }
+
 }

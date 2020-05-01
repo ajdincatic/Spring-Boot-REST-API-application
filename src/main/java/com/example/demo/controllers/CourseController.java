@@ -28,6 +28,11 @@ public class CourseController {
         return courseService.getAllCourses();
     }
 
+    @RequestMapping("/topics/{topicId}/courses")
+    public List<Course> getAllCoursesByTopic(@PathVariable Long topicId){
+        return courseService.getAllCoursesByTopic(topicId);
+    }
+
     // same name of parameter in url and parameter
     @RequestMapping("/courses/{Id}")
     public Course getCourseById(@PathVariable Long Id){
